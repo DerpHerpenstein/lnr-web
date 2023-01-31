@@ -1,0 +1,27 @@
+{
+  "name": "lnr-web",
+  "version": "0.1.0",
+  "description": "Simplify interacting with the LNR Web protocol",
+  "main": "index.js",
+  "scripts": {
+    "production": "WEBPACK_ENV=build webpack",
+    "development": "WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "test": "node test/test.js"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "keywords": [
+    "LNR",
+    "linagee",
+    "ethers"
+  ],
+  "author": "Derp Herpenstein",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^5.7.2",
+    "npm-packlist": "^7.0.4",
+    "pako": "^2.1.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
