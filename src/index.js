@@ -57,7 +57,7 @@ class LNR_WEB {
 
       if(params[5]) // if its zipped, unzip it
         finalData = this.decompressData(finalData);
-			console.log(finalData);
+			//console.log(finalData);
 
       //finalData = decodeURI(finalData); // makes the files larger
       let computedHash = this.ethers.utils.keccak256(this.ethers.utils.toUtf8Bytes(finalData));
