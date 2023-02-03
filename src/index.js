@@ -149,13 +149,13 @@ class LNR_WEB {
     //console.log(website);
     let pageObject = await this.getDataFromChain(website.pageTxHashArray[0], website.pageHashArray[0]);
     //console.log(pageObject);
-    pageObject.finalData = await this.replaceCSS(pageObject.data, true);
-    pageObject.finalData = await this.replaceJS(pageObject.finalData, true);
+    pageObject.finalData = await this.replaceCSS(pageObject.data, true, "");
+    pageObject.finalData = await this.replaceJS(pageObject.finalData, true, "");
     //console.log(pageObject.data);
     return pageObject;
   }
 
-  async fetchBase64Data(dataUrl){
+  async fetchBase64Data(directory, dataUrl){
     if(dataUrl.indexOf("derp://") > -1){
       let splitData = dataUrl.split("/");
       let txHash = splitData[2];
@@ -164,29 +164,29 @@ class LNR_WEB {
       return [true, btoa(chainData.data)];
     }
     else {
-      let tmpData = await fetch(dataUrl);
+      let tmpData = await fetch(directory + dataUrl);
       tmpData = await tmpData.text();
       return [false, btoa(tmpData)]; // base64 encoded string
     }
   }
 
-  async replaceCSS(site, viewIt){
+  async replaceCSS(site, viewIt, directory){
     let regexp = '<link rel="stylesheet" href="([^">]+)">';
     let matches = site.matchAll(regexp);
     for (const match of matches) {
-      let tmpData = await this.fetchBase64Data(match[1]);
+      let tmpData = await this.fetchBase64Data(directory, match[1]);
       if(viewIt || !tmpData[0])
         site = site.replace(match[1], "data:text/css;base64, " + tmpData[1]);
     }
     return site;
   }
 
-  async replaceJS(site, viewIt){
+  async replaceJS(site, viewIt, directory){
     let regexp = '<script (.*?)src="([^">]+)">[\s\S]*?<\/script>';
     let matches = site.matchAll(regexp);
 		// find script tags and inject input into them
     for (const match of matches) {
-      let tmpData = await this.fetchBase64Data(match[2]);
+      let tmpData = await this.fetchBase64Data(directory, match[2]);
       if(viewIt || !tmpData[0])
         site = site.replace(match[2], "data:text/javascript;base64, " + tmpData[1]);
     }
@@ -197,7 +197,7 @@ class LNR_WEB {
 			let importJSON = JSON.parse(site.slice(start+25, end));
 			for(const tmpImport in importJSON.imports){
 				let tmpURL = importJSON.imports[tmpImport];
-				let tmpData = await this.fetchBase64Data(tmpURL);
+				let tmpData = await this.fetchBase64Data(directory, tmpURL);
 				if(viewIt || !tmpData[0])
 					site = site.replace(tmpURL, "data:text/javascript;base64, " + tmpData[1]);
 			}
