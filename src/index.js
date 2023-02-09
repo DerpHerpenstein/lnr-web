@@ -16,6 +16,7 @@ class LNR_WEB {
   }
 
   constructor(_lnr, _provider) {
+    this.lnr = _lnr;
     this.ethers = _lnr.ethers;
     this.signer = _lnr.signer;
     this.provider = _provider;
@@ -115,19 +116,38 @@ class LNR_WEB {
       throw "File too large, The current max is 254kb";
   }
 
-  async updateWebsite(domainAsBytes32, siteDataHash, siteTxHash, uploadData){
-    return this.lnrWebContract.updateWebsite( domainAsBytes32,
+  async updateWebsite(domain, siteDataHash, siteTxHash, uploadData){
+    if(domain.endsWith(".og")){
+      let domainAsBytes32 = this.lnr.domainToBytes32(domain);
+      return this.lnrWebContract.updateWebsite( domainAsBytes32,
                                               siteDataHash,
                                               siteTxHash,
                                               this.compressData(uploadData)
                                             ).then(function(result){
                                                   return result;
                                             });
+    }
+    else if(domain.endsWith(".eth")){
+      throw "To update your ENS website, update your \"url\" text record to derp://txHash/dataHash\n\
+             To learn more: https://docs.ens.domains/ens-improvement-proposals/ensip-5-text-records";
+    }
+    else
+      throw "Unsupported Top Level Domain!"
   }
 
 
-  async getWebsite(domainAsBytes32){
-    let website = await this.lnrWebContract.getWebsite(domainAsBytes32);
+  async getWebsite(domain){
+    let website = {};
+    if(domain.endsWith(".og")){
+      let domainAsBytes32 = this.lnr.domainToBytes32(domain);
+      console.log(domainAsBytes32);
+      website = await this.lnrWebContract.getWebsite(domainAsBytes32);
+    }
+    else if(domain.endsWith(".eth"))
+      throw "NEED TO IMPLEMENT ENS LOGIC";
+    else
+      throw "Unsupported Top Level Domain!";
+    
     let pageObject = await this.getDataFromChain(website.pageTxHash, website.pageHash);
     pageObject.finalData = await this.replaceCSS(pageObject.data, true, "");
     pageObject.finalData = await this.replaceJS(pageObject.finalData, true, "");
