@@ -15,9 +15,9 @@ class LNR_WEB {
     return "0xc97668c4F50BAd9347c30eBcfB84F2dF14df42f9";//"0xc72FDddeCf69D37d58518727B70BD616BC795Ca3";//"0x9B1558c57Bf2B2686f2E024252E84BA746eBa665";
   }
 
-  constructor(_ethers, _provider, _signer) {
-    this.ethers = _ethers;
-    this.signer = _signer;
+  constructor(_lnr, _provider) {
+    this.ethers = _lnr.ethers;
+    this.signer = _lnr.signer;
     this.provider = _provider;
     this.lnrWebAbi = lnrWebAbi;
     this.lnrWebContract = new this.ethers.Contract(LNR_WEB.LNR_WEB_ADDRESS, this.lnrWebAbi, this.signer);
