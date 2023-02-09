@@ -1,6 +1,4 @@
 import lnrWebAbi from '../abi/lnrWebAbi.json';
-//import { createRequire } from "./module";
-//const require = createRequire(import.meta.url);
 const pako = require("pako");
 
 
@@ -55,11 +53,9 @@ class LNR_WEB {
 				finalData += params1[5].slice(2);
 			}
 
-      if(params[5]) // if its zipped, unzip it
+      if(params[5])
         finalData = this.decompressData(finalData);
-			//console.log(finalData);
 
-      //finalData = decodeURI(finalData); // makes the files larger
       let computedHash = this.ethers.utils.keccak256(this.ethers.utils.toUtf8Bytes(finalData));
       if(computedHash === params[0])
         return {
@@ -74,7 +70,6 @@ class LNR_WEB {
         throw "Error: Hash Mismatch! Possibly malicious file"
       }
     }
-
     throw "Error: Unable to locate asset: derp://" + tmpTxHash + "/" + tmpDataHash;
   }
 
@@ -87,8 +82,7 @@ class LNR_WEB {
     }
     tmpNewFile.compressedData = this.compressData(tmpNewFile.uncompressedData);
     tmpNewFile.uncompressedKeccak256 = this.ethers.utils.keccak256(this.ethers.utils.toUtf8Bytes(tmpNewFile.uncompressedData));
-    //console.log("Upload Asset:");
-    //console.log(tmpNewFile);
+
     if(tmpNewFile.compressedData.length < 127000){
       return this.lnrWebContract.uploadAsset( tmpNewFile.uncompressedKeccak256,
                                               LNR_WEB.LNR_ZERO_HASH,
@@ -119,10 +113,6 @@ class LNR_WEB {
     }
     else
       throw "File too large, The current max is 254kb";
-    //console.log("Upload Asset Result:")
-    //console.log(upload);
-    //console.log('txHash', upload.hash);
-    //console.log('dataHash', tmpNewFile.uncompressedKeccak256);
   }
 
   async updateWebsite(domainAsBytes32, siteDataHash, siteTxHash, uploadData){
@@ -133,20 +123,14 @@ class LNR_WEB {
                                             ).then(function(result){
                                                   return result;
                                             });
-    //console.log("Update Website Result:");
-    //console.log(update);
   }
 
 
   async getWebsite(domainAsBytes32){
     let website = await this.lnrWebContract.getWebsite(domainAsBytes32);
-    //console.log("Website Data:");
-    //console.log(website);
     let pageObject = await this.getDataFromChain(website.pageTxHash, website.pageHash);
-    //console.log(pageObject);
     pageObject.finalData = await this.replaceCSS(pageObject.data, true, "");
     pageObject.finalData = await this.replaceJS(pageObject.finalData, true, "");
-    //console.log(pageObject.data);
     return pageObject;
   }
 
@@ -196,7 +180,6 @@ class LNR_WEB {
 				if(viewIt || !tmpData[0])
 					site = site.replace(tmpURL, "data:text/javascript;base64, " + tmpData[1]);
 			}
-
 		}
     return site;
   }
