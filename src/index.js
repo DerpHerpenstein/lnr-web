@@ -14,7 +14,7 @@ class LNR_WEB {
 	}
 
   static get LNR_WEB_ADDRESS() {
-    return "0xc72FDddeCf69D37d58518727B70BD616BC795Ca3";//"0x9B1558c57Bf2B2686f2E024252E84BA746eBa665";
+    return "0xc97668c4F50BAd9347c30eBcfB84F2dF14df42f9";//"0xc72FDddeCf69D37d58518727B70BD616BC795Ca3";//"0x9B1558c57Bf2B2686f2E024252E84BA746eBa665";
   }
 
   constructor(_ethers, _provider, _signer) {
@@ -68,8 +68,7 @@ class LNR_WEB {
           type: params[3],
           desc: params[4],
           raw : ((params[1] !== LNR_WEB.LNR_ZERO_HASH)? (params[5] +params1[5].slice(2)) : params[5]),
-          data: finalData,
-          zip: params[6]
+          data: finalData
         }
       else{
         throw "Error: Hash Mismatch! Possibly malicious file"
@@ -96,8 +95,7 @@ class LNR_WEB {
                                               tmpNewFile.name,
                                               tmpNewFile.type,
                                               tmpNewFile.desc,
-                                              tmpNewFile.compressedData,
-                                              true ).then(function(result){
+                                              tmpNewFile.compressedData).then(function(result){
                                                   return result;
                                               });
     }
@@ -109,16 +107,14 @@ class LNR_WEB {
                                               tmpNewFile.name,
                                               tmpNewFile.type,
                                               tmpNewFile.desc,
-                                              tmpNewFile.compressedData.slice(half),
-                                              true );
+                                              tmpNewFile.compressedData.slice(half));
 
       let firstHalf = await this.lnrWebContract.uploadAsset(tmpNewFile.uncompressedKeccak256,
                                               secondHalf.hash,
                                               tmpNewFile.name,
                                               tmpNewFile.type,
                                               tmpNewFile.desc,
-                                              tmpNewFile.compressedData.slice(0,half),
-                                              true );
+                                              tmpNewFile.compressedData.slice(0,half));
       return firstHalf;
     }
     else
@@ -129,12 +125,11 @@ class LNR_WEB {
     //console.log('dataHash', tmpNewFile.uncompressedKeccak256);
   }
 
-  async updateWebsite(domainAsBytes32, siteDescription, siteLinkArray, siteDataHashArray, siteTxHashArray){
+  async updateWebsite(domainAsBytes32, siteDataHash, siteTxHash, uploadData){
     return this.lnrWebContract.updateWebsite( domainAsBytes32,
-                                              siteDescription,
-                                              siteLinkArray,
-                                              siteDataHashArray,
-                                              siteTxHashArray
+                                              siteDataHash,
+                                              siteTxHash,
+                                              this.compressData(uploadData)
                                             ).then(function(result){
                                                   return result;
                                             });
@@ -147,7 +142,7 @@ class LNR_WEB {
     let website = await this.lnrWebContract.getWebsite(domainAsBytes32);
     //console.log("Website Data:");
     //console.log(website);
-    let pageObject = await this.getDataFromChain(website.pageTxHashArray[0], website.pageHashArray[0]);
+    let pageObject = await this.getDataFromChain(website.pageTxHash, website.pageHash);
     //console.log(pageObject);
     pageObject.finalData = await this.replaceCSS(pageObject.data, true, "");
     pageObject.finalData = await this.replaceJS(pageObject.finalData, true, "");
@@ -193,7 +188,7 @@ class LNR_WEB {
 		// find the importmap and inject code into it
 		let start = site.indexOf('<script type="importmap">');
 		let end = site.indexOf('</script>', start)
-		if(start && end){
+		if(start >=0 && end >=0){
 			let importJSON = JSON.parse(site.slice(start+25, end));
 			for(const tmpImport in importJSON.imports){
 				let tmpURL = importJSON.imports[tmpImport];

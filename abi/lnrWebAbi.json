@@ -1,1 +1,265 @@
-[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"assetHash","type":"bytes32"},{"indexed":false,"internalType":"string","name":"assetName","type":"string"},{"indexed":false,"internalType":"string","name":"assetDescription","type":"string"}],"name":"NewAsset","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"domain","type":"bytes32"},{"indexed":false,"internalType":"uint256","name":"version","type":"uint256"}],"name":"NewState","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"domain","type":"bytes32"},{"indexed":false,"internalType":"string","name":"description","type":"string"}],"name":"NewWebsite","type":"event"},{"inputs":[{"internalType":"bytes32","name":"_domain","type":"bytes32"}],"name":"getWebsite","outputs":[{"components":[{"internalType":"bool","name":"derp","type":"bool"},{"internalType":"string[]","name":"linkArray","type":"string[]"},{"internalType":"bytes32[]","name":"pageHashArray","type":"bytes32[]"},{"internalType":"bytes32[]","name":"pageTxHashArray","type":"bytes32[]"}],"internalType":"structLNR_WEB_V0.Website","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"lnrResolverAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"lnrWebsites","outputs":[{"internalType":"bool","name":"derp","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"_domain","type":"bytes32"},{"internalType":"uint256","name":"_version","type":"uint256"},{"internalType":"bytes","name":"_state","type":"bytes"},{"internalType":"bool","name":"_zip","type":"bool"}],"name":"updateState","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"_domain","type":"bytes32"},{"internalType":"string","name":"_description","type":"string"},{"internalType":"string[]","name":"_linkArray","type":"string[]"},{"internalType":"bytes32[]","name":"_pageHashArray","type":"bytes32[]"},{"internalType":"bytes32[]","name":"_pageTxHashArray","type":"bytes32[]"}],"name":"updateWebsite","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"_assetHash","type":"bytes32"},{"internalType":"bytes32","name":"_nextChunk","type":"bytes32"},{"internalType":"string","name":"_assetName","type":"string"},{"internalType":"string","name":"_assetType","type":"string"},{"internalType":"string","name":"_assetDescription","type":"string"},{"internalType":"bytes","name":"_assetData","type":"bytes"},{"internalType":"bool","name":"_zip","type":"bool"}],"name":"uploadAsset","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32[]","name":"_assetHash","type":"bytes32[]"},{"internalType":"string[]","name":"_assetName","type":"string[]"},{"internalType":"string[]","name":"_assetType","type":"string[]"},{"internalType":"string[]","name":"_assetDescription","type":"string[]"},{"internalType":"bytes[]","name":"_assetData","type":"bytes[]"},{"internalType":"bool[]","name":"_zip","type":"bool[]"}],"name":"uploadAssets","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "assetHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "assetName",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "assetDescription",
+                "type": "string"
+            }
+        ],
+        "name": "NewAsset",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "domain",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "version",
+                "type": "uint256"
+            }
+        ],
+        "name": "NewState",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "domain",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "NewWebsite",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_domain",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getWebsite",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "derp",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "pageHash",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "pageTxHash",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct LNR_WEB_V0.Website",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lnrResolverAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "lnrWebsites",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "derp",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "pageHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "pageTxHash",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_domain",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_version",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_state",
+                "type": "bytes"
+            }
+        ],
+        "name": "updateState",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_domain",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_pageHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_pageTxHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "name": "updateWebsite",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_assetHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_nextChunk",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "string",
+                "name": "_assetName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_assetType",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_assetDescription",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_assetData",
+                "type": "bytes"
+            }
+        ],
+        "name": "uploadAsset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "_assetHash",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_assetName",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_assetType",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_assetDescription",
+                "type": "string[]"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "_assetData",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "uploadAssets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
