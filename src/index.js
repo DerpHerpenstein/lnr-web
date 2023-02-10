@@ -148,6 +148,16 @@ class LNR_WEB {
       throw "Unsupported Top Level Domain!"
   }
 
+  async getWebsiteState(domain, sender, version, startBlock, endBlock){
+    try{
+      let domainAsBytes32 = this.lnr.domainToBytes32("test.og");
+      let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender, version);
+      return await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
+    }
+    catch(e){
+      throw e.message;
+    }
+  }
 
   async getWebsite(domain){
     let website = {};
