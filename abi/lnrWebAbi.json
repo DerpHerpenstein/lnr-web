@@ -34,10 +34,22 @@
                 "type": "bytes32"
             },
             {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "version",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "state",
+                "type": "bytes"
             }
         ],
         "name": "NewState",
