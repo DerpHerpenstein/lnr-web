@@ -152,7 +152,12 @@ class LNR_WEB {
     try{
       let domainAsBytes32 = this.lnr.domainToBytes32("test.og");
       let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender, version);
-      return await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
+      let rawResults = await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
+      let results = [];
+      for(let i=0; i<rawResults.length; i++){
+        results.push({blockNumber: rawResults[i].blockNumber, args: rawResults[i].args, data: this.decompressData(rawResults[i].args.state)});
+      }
+      return results;
     }
     catch(e){
       throw e.message;
