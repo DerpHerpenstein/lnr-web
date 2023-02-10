@@ -36,12 +36,17 @@ class LNR_WEB {
   }
 
   async getRawDataFromChain(tmpTxHash, tmpDataHash){
-    let tx = await this.provider.getTransaction(tmpTxHash);
-    let input_data = '0x' + tx.data.slice(10);
-    let iface = new this.ethers.utils.Interface(lnrWebAbi);
-    let decodedData = iface.parseTransaction({ data: tx.data, value: tx.value });
-    let params = decodedData.args;
-    return params;
+    try{
+      let tx = await this.provider.getTransaction(tmpTxHash);
+      let input_data = '0x' + tx.data.slice(10);
+      let iface = new this.ethers.utils.Interface(lnrWebAbi);
+      let decodedData = iface.parseTransaction({ data: tx.data, value: tx.value });
+      let params = decodedData.args;
+      return params;
+    }
+    catch(e){
+      throw "Error loading asset at derp://" + tmpTxHash + "/" + tmpDataHash;
+    }
   }
 
   async getDataFromChain(tmpTxHash, tmpDataHash){
@@ -168,7 +173,6 @@ class LNR_WEB {
     let website = {};
     if(domain.endsWith(".og")){
       let domainAsBytes32 = this.lnr.domainToBytes32(domain);
-      console.log(domainAsBytes32);
       website = await this.lnrWebContract.getWebsite(domainAsBytes32);
     }
     else if(domain.endsWith(".eth"))
