@@ -12,7 +12,7 @@ class LNR_WEB {
 	}
 
   static get LNR_WEB_ADDRESS() {
-    return "0xc97668c4F50BAd9347c30eBcfB84F2dF14df42f9";//"0xc72FDddeCf69D37d58518727B70BD616BC795Ca3";//"0x9B1558c57Bf2B2686f2E024252E84BA746eBa665";
+    return "0x69584c3709215A9042EB99793082665fC2eEC574";
   }
 
   constructor(_lnr, _provider) {
@@ -116,6 +116,19 @@ class LNR_WEB {
       throw "File too large, The current max is 254kb";
   }
 
+  async updateState(domain, version, stateData){
+    if(domain.endsWith(".og")){
+      let domainAsBytes32 = this.lnr.domainToBytes32(domain);
+      return this.lnrWebContract.updateState( domainAsBytes32,
+                                                version,
+                                                this.compressData(stateData)
+                                              ).then(function(result){
+                                                    return result;
+                                              });
+    }
+    throw "Updating state is only currently available for .og domains";
+  }
+
   async updateWebsite(domain, siteDataHash, siteTxHash, uploadData){
     if(domain.endsWith(".og")){
       let domainAsBytes32 = this.lnr.domainToBytes32(domain);
@@ -128,7 +141,7 @@ class LNR_WEB {
                                             });
     }
     else if(domain.endsWith(".eth")){
-      throw "To update your ENS website, update your \"url\" text record to derp://txHash/dataHash\n\
+      throw "To update your ENS website, update your \"url\" text record to derp:// address of your website\n\
              To learn more: https://docs.ens.domains/ens-improvement-proposals/ensip-5-text-records";
     }
     else
@@ -144,7 +157,8 @@ class LNR_WEB {
       website = await this.lnrWebContract.getWebsite(domainAsBytes32);
     }
     else if(domain.endsWith(".eth"))
-      throw "NEED TO IMPLEMENT ENS LOGIC";
+      throw "NEED TO IMPLEMENT ENS LOGIC - dont forget to check for derp://test.og and then derp://0x../0x..\n\
+             Need to allow TLD to point to asset, or website that points to asset";
     else
       throw "Unsupported Top Level Domain!";
     
