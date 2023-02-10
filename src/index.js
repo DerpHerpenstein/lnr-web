@@ -150,7 +150,7 @@ class LNR_WEB {
 
   async getWebsiteState(domain, sender, version, startBlock, endBlock){
     try{
-      let domainAsBytes32 = this.lnr.domainToBytes32("test.og");
+      let domainAsBytes32 = this.lnr.domainToBytes32(domain);
       let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender, version);
       let rawResults = await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
       let results = [];
