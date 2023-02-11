@@ -7,6 +7,7 @@ This package simplifies interacting with the LNR Web protocol
 To generate the library, run "npx webpack"
 
 # Lets put entire websites on the ethereum blockchain
+## Note: At this moment, we are only on sepolia, going mainnet soon!
 ## Note: for .og domains to be used with lnr-web, they must first be unwrapped
 
 LR-web is a library that connects domain names with decentralized assets stored as calldata on the ethereum blockchain. In practice, this allows us to upload websites onto the ethereum blockchain, and access them by going to [name].og
@@ -76,7 +77,7 @@ Based on the figures above, the cost to deploy that right now is < $10!  Even wh
 Consider the fact that .og domains have no renewal fees, and that you dont need to pay any monthly server costs!
 
 ## Okay that sounds pretty good, how are the assets reused?
-Like I said, we are storing assets on eth and accessing them with URLs.  This allows us to so something like this
+Like I said, we are storing assets on eth and accessing them with URLs.  This allows us to do something like this
 
 ```
   <head>
@@ -101,9 +102,13 @@ Like I said, we are storing assets on eth and accessing them with URLs.  This al
   </head>
 ```
 
-In this example, we are using jquery, bulma css, material icons and three.js. We only need to store a few hundred bytes on chain to access all of these libraries.
+In this example, we are using jquery, bulma css, material icons and three.js. We only need to store a few hundred bytes on chain to access all of these libraries. (Because they have already been uploaded for you to use *Thanks derp!*)
 
 When lnr-web fetches your asset (single html file) it will go through and find the script/css tags the locate the assets on the blockchain, verify their integrity, and then import them, just like using a CDN.
+
+To get stated building, check out the LNR-web-template for vanilla JS, or LNR-web-template-solidjs for a SolidJS implementation
+
+
 
 
 
