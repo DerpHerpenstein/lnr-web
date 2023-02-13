@@ -87,11 +87,6 @@
             {
                 "components": [
                     {
-                        "internalType": "bool",
-                        "name": "derp",
-                        "type": "bool"
-                    },
-                    {
                         "internalType": "bytes32",
                         "name": "pageHash",
                         "type": "bytes32"
@@ -102,7 +97,7 @@
                         "type": "bytes32"
                     }
                 ],
-                "internalType": "struct LNR_WEB_V0.Website",
+                "internalType": "struct LNR_WEB_V1.Website",
                 "name": "",
                 "type": "tuple"
             }
@@ -133,11 +128,6 @@
         ],
         "name": "lnrWebsites",
         "outputs": [
-            {
-                "internalType": "bool",
-                "name": "derp",
-                "type": "bool"
-            },
             {
                 "internalType": "bytes32",
                 "name": "pageHash",
@@ -222,7 +212,7 @@
             },
             {
                 "internalType": "string",
-                "name": "_assetType",
+                "name": "_assetHeaders",
                 "type": "string"
             },
             {
@@ -255,7 +245,7 @@
             },
             {
                 "internalType": "string[]",
-                "name": "_assetType",
+                "name": "_assetHeaders",
                 "type": "string[]"
             },
             {
