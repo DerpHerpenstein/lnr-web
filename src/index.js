@@ -12,7 +12,7 @@ class LNR_WEB {
 	}
 
   static get LNR_WEB_ADDRESS() {
-    return "0x69584c3709215A9042EB99793082665fC2eEC574";
+    return "0xB78432f741d50Ae010aa7bedaC46f010C46B8F98";
   }
 
   constructor(_lnr, _provider) {
@@ -67,7 +67,7 @@ class LNR_WEB {
         return {
           hash: params[0],
           name: params[2],
-          type: params[3],
+          headers: params[3],
           desc: params[4],
           raw : ((params[1] !== LNR_WEB.LNR_ZERO_HASH)? (params[5] +params1[5].slice(2)) : params[5]),
           data: finalData
@@ -79,10 +79,10 @@ class LNR_WEB {
     throw "Error: Unable to locate asset: derp://" + tmpTxHash + "/" + tmpDataHash;
   }
 
-  async uploadNewFile(fileName, fileType, fileDesc, fileData){
+  async uploadNewFile(fileName, fileHeaders, fileDesc, fileData){
     let tmpNewFile = {
       name: fileName,
-      type: fileType,
+      headers: fileHeaders,
       desc: fileDesc,
       uncompressedData : fileData,
     }
@@ -93,7 +93,7 @@ class LNR_WEB {
       return this.lnrWebContract.uploadAsset( tmpNewFile.uncompressedKeccak256,
                                               LNR_WEB.LNR_ZERO_HASH,
                                               tmpNewFile.name,
-                                              tmpNewFile.type,
+                                              tmpNewFile.headers,
                                               tmpNewFile.desc,
                                               tmpNewFile.compressedData).then(function(result){
                                                   return result;
@@ -105,14 +105,14 @@ class LNR_WEB {
       let secondHalf = await this.lnrWebContract.uploadAsset(tmpNewFile.uncompressedKeccak256,
                                               LNR_WEB.LNR_ZERO_HASH,
                                               tmpNewFile.name,
-                                              tmpNewFile.type,
+                                              tmpNewFile.headers,
                                               tmpNewFile.desc,
                                               tmpNewFile.compressedData.slice(half));
 
       let firstHalf = await this.lnrWebContract.uploadAsset(tmpNewFile.uncompressedKeccak256,
                                               secondHalf.hash,
                                               tmpNewFile.name,
-                                              tmpNewFile.type,
+                                              tmpNewFile.headers,
                                               tmpNewFile.desc,
                                               tmpNewFile.compressedData.slice(0,half));
       return firstHalf;
