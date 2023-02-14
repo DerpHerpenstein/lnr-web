@@ -12,7 +12,7 @@ class LNR_WEB {
 	}
 
   static get LNR_WEB_ADDRESS() {
-    return "0xB78432f741d50Ae010aa7bedaC46f010C46B8F98";
+    return "0xfeae5e7264A193B56A1d351052C0515eabe6a455";
   }
 
   constructor(_lnr, _provider) {
