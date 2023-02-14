@@ -7,7 +7,6 @@ This package simplifies interacting with the LNR Web protocol
 To generate the library, run "npx webpack"
 
 # Lets put entire websites on the ethereum blockchain
-## Note: At this moment, we are only on sepolia, going mainnet soon!
 ## Note: for .og domains to be used with lnr-web, they must first be unwrapped
 
 LR-web is a library that connects domain names with decentralized assets stored as calldata on the ethereum blockchain. In practice, this allows us to upload websites onto the ethereum blockchain, and access them by going to [name].og
