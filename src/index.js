@@ -146,7 +146,7 @@ class LNR_WEB {
                                             });
     }
     else if(domain.endsWith(".eth")){
-      throw "To update your ENS website, update your \"url\" text record to derp:// address of your website\n\
+      throw "To update your ENS website, update your \"url\" text record to the derp:// asset address of your website\n\
              To learn more: https://docs.ens.domains/ens-improvement-proposals/ensip-5-text-records";
     }
     else
@@ -175,9 +175,35 @@ class LNR_WEB {
       let domainAsBytes32 = this.lnr.domainToBytes32(domain);
       website = await this.lnrWebContract.getWebsite(domainAsBytes32);
     }
-    else if(domain.endsWith(".eth"))
-      throw "NEED TO IMPLEMENT ENS LOGIC - dont forget to check for derp://test.og and then derp://0x../0x..\n\
-             Need to allow TLD to point to asset, or website that points to asset";
+    else if(domain.endsWith(".eth")){
+      try{
+        const resolver = await og.provider.getResolver(domain);
+        const urlText = await resolver.getText("url");
+        if(urlText.endsWith(".og")){
+          let domainAsBytes32 = this.lnr.domainToBytes32(urlText);
+          website = await this.lnrWebContract.getWebsite(domainAsBytes32);
+        }
+        else if(urlText.indexOf("derp://") > -1){
+          let splitData = urlText.split("/");
+          website = {
+            pageTxHash: splitData[2],
+            pageHash: splitData[3]
+          }
+        }
+        else
+          throw 'Error loading asset: "' + urlText +'"';
+      }
+      catch(e){
+        throw 'Error loading ' + domain + "\n" + e.toString();
+      }
+    }
+    else if(domain.indexOf("derp://") > -1){
+      let splitData = domain.split("/");
+      website = {
+        pageTxHash: splitData[2],
+        pageHash: splitData[3]
+      }
+    }
     else
       throw "Unsupported Top Level Domain!";
     
@@ -198,6 +224,7 @@ class LNR_WEB {
     else {
       let tmpData = await fetch(directory + dataUrl);
       tmpData = await tmpData.text();
+      tmpData = new TextEncoder().encode(tmpData);
       return [false, btoa(tmpData)]; // base64 encoded string
     }
   }
