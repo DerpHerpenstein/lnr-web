@@ -1,6 +1,6 @@
 {
   "name": "lnr-web",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simplify interacting with the LNR Web protocol",
   "main": "index.js",
   "scripts": {

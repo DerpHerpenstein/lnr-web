@@ -224,7 +224,6 @@ class LNR_WEB {
     else {
       let tmpData = await fetch(directory + dataUrl);
       tmpData = await tmpData.text();
-      tmpData = new TextEncoder().encode(tmpData);
       return [false, btoa(tmpData)]; // base64 encoded string
     }
   }
