@@ -156,11 +156,12 @@ class LNR_WEB {
   async getWebsiteState(domain, sender, version, startBlock, endBlock){
     try{
       let domainAsBytes32 = this.lnr.domainToBytes32(domain);
-      let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender, version);
+      let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender);
       let rawResults = await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
       let results = [];
       for(let i=0; i<rawResults.length; i++){
-        results.push({blockNumber: rawResults[i].blockNumber, args: rawResults[i].args, data: this.decompressData(rawResults[i].args.state)});
+        if(version == null || rawResults[i].args.version == version)
+          results.push({blockNumber: rawResults[i].blockNumber, args: rawResults[i].args, data: this.decompressData(rawResults[i].args.state)});
       }
       return results;
     }
@@ -210,6 +211,7 @@ class LNR_WEB {
     let pageObject = await this.getDataFromChain(website.pageTxHash, website.pageHash);
     pageObject.finalData = await this.replaceCSS(pageObject.data, true, "");
     pageObject.finalData = await this.replaceJS(pageObject.finalData, true, "");
+    pageObject.domain = domain;
     return pageObject;
   }
 
