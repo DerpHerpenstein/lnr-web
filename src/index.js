@@ -157,7 +157,7 @@ class LNR_WEB {
     try{
       let domainAsBytes32 = this.lnr.domainToBytes32(domain);
       let filter = this.lnrWebContract.filters.NewState(domainAsBytes32, sender);
-      let rawResults = await og.lnrWeb.lnrWebContract.queryFilter(filter, startBlock, endBlock);
+      let rawResults = await this.lnrWebContract.queryFilter(filter, startBlock, endBlock);
       let results = [];
       for(let i=0; i<rawResults.length; i++){
         if(version == null || rawResults[i].args.version == version)
@@ -178,7 +178,7 @@ class LNR_WEB {
     }
     else if(domain.endsWith(".eth")){
       try{
-        const resolver = await og.provider.getResolver(domain);
+        const resolver = await this.provider.getResolver(domain);
         const urlText = await resolver.getText("url");
         if(urlText.endsWith(".og")){
           let domainAsBytes32 = this.lnr.domainToBytes32(urlText);
