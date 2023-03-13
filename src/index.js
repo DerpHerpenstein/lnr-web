@@ -216,12 +216,21 @@ class LNR_WEB {
   }
 
   async fetchBase64Data(directory, dataUrl){
-    if(dataUrl.indexOf("derp://") > -1){
+    if(dataUrl.indexOf("http://") > -1){
+      throw "HTTP not supported, use HTTPS\nReplace " + dataUrl;
+    }
+    else if(dataUrl.indexOf("derp://") > -1){
       let splitData = dataUrl.split("/");
       let txHash = splitData[2];
       let dataHash = splitData[3];
       let chainData = await this.getDataFromChain(txHash,dataHash);
       return [true, btoa(chainData.data)];
+    }
+    else if(dataUrl.indexOf("https://") > -1){
+      let tmpData = await fetch(dataUrl);
+      tmpData = await tmpData.text();
+      console.log("WARNING - External dependancy embedded in your bundle\nThis can cause your bundle to be VERY LARGE\nEnsure you intend to embed: " + dataUrl);
+      return [false, btoa(tmpData)]; // base64 encoded string
     }
     else {
       let tmpData = await fetch(directory + dataUrl);
@@ -232,6 +241,8 @@ class LNR_WEB {
 
   async replaceCSS(site, viewIt, directory){
     let regexp = '<link rel="stylesheet" href="([^">]+)">';
+    let regComments = /(\<!--.*?\-->)/g;
+    site = site.replace(regComments,"");
     let matches = site.matchAll(regexp);
     for (const match of matches) {
       let tmpData = await this.fetchBase64Data(directory, match[1]);
@@ -243,6 +254,8 @@ class LNR_WEB {
 
   async replaceJS(site, viewIt, directory){
     let regexp = '<script (.*?)src="([^">]+)">[\s\S]*?<\/script>';
+    let regComments = /(\<!--.*?\-->)/g;
+    site = site.replace(regComments,"");
     let matches = site.matchAll(regexp);
 		// find script tags and inject input into them
     for (const match of matches) {
